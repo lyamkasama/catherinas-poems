@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catherina's Poems | Collection</title>
+    <title>Catherina's Poems | Колекція</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,9 +11,9 @@
 
     <style>
         :root {
-            /* Основные цвета для текста на темном фоне */
-            --text-cream: #f2e8d5; /* Кремовый цвет текста */
-            --text-muted: #c7b299; /* Приглушенный золотистый */
+            /* Основні кольори для тексту на темному тлі */
+            --text-cream: #f2e8d5; /* Кремовий колір тексту */
+            --text-muted: #c7b299; /* Приглушений золотистий */
         }
 
         * {
@@ -23,22 +23,22 @@
         }
 
         body {
-            /* ГЛАВНЫЙ ГРАДИЕНТ: Плавный переход от коричневого к синему */
+            /* ГОЛОВНИЙ ГРАДІЄНТ: Плавний перехід від коричневого до синього */
             background: linear-gradient(
                 180deg, 
-                #3a2c26 0%,   /* Глубокий коричневый (начало) */
-                #4a3b47 35%,  /* Переходный (коричнево-фиолетовый) */
-                #2c3e50 70%,  /* Темный синий */
-                #1a2533 100%  /* Полночный синий (конец) */
+                #3a2c26 0%,   /* Глибокий коричневий (початок) */
+                #4a3b47 35%,  /* Перехідний (коричнево-фіолетовий) */
+                #2c3e50 70%,  /* Темно-синій */
+                #1a2533 100%  /* Північний синій (кінець) */
             );
-            /* Растягиваем фон, чтобы градиент был плавным на всю длину контента */
+            /* Розтягуємо фон, щоб градієнт був плавний на всю довжину контенту */
             min-height: 250vh; 
             color: var(--text-cream);
             font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
         }
 
-        /* Тонкая текстура шума поверх градиента для глубины */
+        /* Тонка текстура шуму поверх градієнта для глибини */
         body::after {
             content: "";
             position: fixed;
@@ -51,7 +51,7 @@
             z-index: 1;
         }
 
-        /* === HEADER === */
+        /* === ШАПКА САЙТУ === */
         header {
             height: 90vh;
             display: flex;
@@ -89,7 +89,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Индикатор скролла */
+        /* Індикатор прокрутки */
         .scroll-indicator {
             position: absolute;
             bottom: 50px;
@@ -107,7 +107,7 @@
         }
 
 
-        /* === MAIN CONTENT & POEM CARDS === */
+        /* === ОСНОВНИЙ КОНТЕНТ ТА КАРТКИ ВІРШІВ === */
         .container {
             max-width: 750px;
             margin: 0 auto;
@@ -116,27 +116,27 @@
             z-index: 2;
         }
 
-        /* Стилизация карточки со стихом (Glassmorphism) */
+        /* Стилізація картки з віршем (Glassmorphism) */
         .poem-card {
-            /* Эффект матового стекла */
-            background: rgba(255, 255, 255, 0.03); /* Очень прозрачный белый */
-            backdrop-filter: blur(12px); /* Размытие фона под карточкой */
-            -webkit-backdrop-filter: blur(12px); /* Для Safari */
-            border: 1px solid rgba(255, 255, 255, 0.08); /* Тонкая рамка */
+            /* Ефект матового скла */
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
             
             border-radius: 12px;
             padding: 60px 40px;
-            margin-bottom: 180px; /* Большой отступ между стихами */
+            margin-bottom: 180px; 
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
-            /* Начальное состояние для анимации (скрыто) */
+            /* Початковий стан для анімації (приховано) */
             opacity: 0;
             transform: translateY(80px) scale(0.97);
-            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); /* Плавная, дорогая анимация */
+            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); 
         }
 
-        /* Состояние, когда карточка видна (добавляется JS) */
+        /* Стан, коли картку видно (додається через JS) */
         .poem-card.active {
             opacity: 1;
             transform: translateY(0) scale(1);
@@ -144,14 +144,15 @@
 
         .poem-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 2rem;
+            font-size: 2.2rem; /* Трохи збільшено для елегантності */
             color: var(--text-muted);
             margin-bottom: 35px;
             position: relative;
             display: inline-block;
+            font-weight: 700;
         }
 
-        /* Декоративная линия под заголовком стиха */
+        /* Декоративна лінія під заголовком вірша */
         .poem-title::after {
             content: '';
             position: absolute;
@@ -183,12 +184,13 @@
             letter-spacing: 2px;
         }
 
-        /* Адаптив для мобильных */
+        /* Адаптивність для мобільних пристроїв */
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
             .poem-card { padding: 40px 20px; margin-bottom: 120px;}
             .poem-content { font-size: 1.3rem; }
-            body { min-height: 200vh; } /* Чуть меньше высота на мобилках */
+            .poem-title { font-size: 1.8rem; }
+            body { min-height: 200vh; }
         }
     </style>
 </head>
@@ -270,39 +272,35 @@
     </main>
 
     <footer>
-        <p>with love & for love</p>
+        <p>з любов'ю та для любові</p>
     </footer>
 
     <script>
-        // JavaScript для отслеживания скролла и запуска анимации
+        // JavaScript для відстеження прокрутки та запуску анімації
         document.addEventListener("DOMContentLoaded", function() {
             
-            // Настройки наблюдателя: срабатывает, когда 15% карточки появляется на экране
+            // Налаштування спостерігача: спрацьовує, коли 15% картки з'являється на екрані
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
                 threshold: 0.15 
             };
 
-            // Функция, которая выполняется при пересечении
+            // Функція, яка виконується при перетині
             const observerCallback = (entries, observer) => {
                 entries.forEach(entry => {
-                    // Если карточка появилась во вьюпорте
+                    // Якщо картка з'явилася у в'юпорті
                     if (entry.isIntersecting) {
-                        // Добавляем класс 'active', который запускает CSS-анимацию
+                        // Додаємо клас 'active', який запускає CSS-анімацію
                         entry.target.classList.add('active');
-                    }
-                    // (Опционально) Если убрать else, стихи будут исчезать при скролле вверх
-                    else {
-                        // entry.target.classList.remove('active'); 
                     }
                 });
             };
 
-            // Создаем наблюдателя
+            // Створюємо спостерігача
             const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-            // Находим все карточки со стихами и подключаем к ним наблюдателя
+            // Знаходимо всі картки з віршами та підключаємо до них спостерігача
             const poems = document.querySelectorAll('.poem-card');
             poems.forEach(poem => {
                 observer.observe(poem);
