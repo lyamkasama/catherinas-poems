@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catherina's Poems | Collection</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Основные цвета для текста на темном фоне */
+            --text-cream: #f2e8d5; /* Кремовый цвет текста */
+            --text-muted: #c7b299; /* Приглушенный золотистый */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* ГЛАВНЫЙ ГРАДИЕНТ: Плавный переход от коричневого к синему */
+            background: linear-gradient(
+                180deg, 
+                #3a2c26 0%,   /* Глубокий коричневый (начало) */
+                #4a3b47 35%,  /* Переходный (коричнево-фиолетовый) */
+                #2c3e50 70%,  /* Темный синий */
+                #1a2533 100%  /* Полночный синий (конец) */
+            );
+            /* Растягиваем фон, чтобы градиент был плавным на всю длину контента */
+            min-height: 250vh; 
+            color: var(--text-cream);
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+        }
+
+        /* Тонкая текстура шума поверх градиента для глубины */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* === HEADER === */
+        header {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: titleFadeIn 2s ease-out;
+        }
+
+        h1 span {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        @keyframes titleFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Индикатор скролла */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            opacity: 0.6;
+            animation: breathe 3s infinite ease-in-out;
+        }
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+
+        /* === MAIN CONTENT & POEM CARDS === */
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding-bottom: 150px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Стилизация карточки со стихом (Glassmorphism) */
+        .poem-card {
+            /* Эффект матового стекла */
+            background: rgba(255, 255, 255, 0.03); /* Очень прозрачный белый */
+            backdrop-filter: blur(12px); /* Размытие фона под карточкой */
+            -webkit-backdrop-filter: blur(12px); /* Для Safari */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Тонкая рамка */
+            
+            border-radius: 12px;
+            padding: 60px 40px;
+            margin-bottom: 180px; /* Большой отступ между стихами */
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+            /* Начальное состояние для анимации (скрыто) */
+            opacity: 0;
+            transform: translateY(80px) scale(0.97);
+            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); /* Плавная, дорогая анимация */
+        }
+
+        /* Состояние, когда карточка видна (добавляется JS) */
+        .poem-card.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .poem-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Декоративная линия под заголовком стиха */
+        .poem-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--text-muted), transparent);
+        }
+
+        .poem-content {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-weight: 400;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 60px;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        /* Адаптив для мобильных */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .poem-card { padding: 40px 20px; margin-bottom: 120px;}
+            .poem-content { font-size: 1.3rem; }
+            body { min-height: 200vh; } /* Чуть меньше высота на мобилках */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>
+            Catherina's Poems
+            <span>вірші, проза, я</span>
+        </h1>
+        <div class="scroll-indicator">
+            поринь у глибину
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <article class="poem-card">
+            <h2 class="poem-title">intimacy of the gaze</h2>
+            <div class="poem-content">
+відстань 
+   між поглядами
+цукор
+   на долонях
+світ
+   гойдається
+між тобою
+  і
+мною
+   безсоння
+            </div>
+        </article>
+
+        <article class="poem-card">
+            <h2 class="poem-title">реклами</h2>
+            <div class="poem-content">
+біль харчується людськими надіями
+прибиває сіре, мокре від сліз тіло
+до обгризених стін магазина
+які тхнуть старѝм трояндовим милом
+
+тіло висить рекламою продажу металу
+час роздирає на паперові шматки
+плями чорнил, нечіткі кострубаті букви 
+які тіло колись називало “мріями”
+
+із розривів, під ним, видно таке ж саме тіло
+його зміст змішався з настінною фарбою
+але, мабуть, там йшлося щось про оренду
+цукеркових повітряних замків
+
+і тіло вже не знає
+чи то біль, чи то час
+чи то втрата власного змісту
+його повільно вбиває
+            </div>
+        </article>
+
+        <article class="poem-card">
+            <h2 class="poem-title">***</h2>
+            <div class="poem-content">
+задивляюсь у твої зіниці
+поховані живцем таємниці
+гублюсь то у темряві, то світлі
+у блакитному попелі розквітлі
+
+вони кричать, чи застигло мовчать?
+вони палають, чи тихо згасають?
+в них заплутані шляхи сум'ять
+які в душі моїй буйно кружляють
+
+задивляюсь у твої зіниці
+дві замкнені темниці
+то був проблиск зорі?
+чи то ти подививсь у очі мені?
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>with love & for love</p>
+    </footer>
+
+    <script>
+        // JavaScript для отслеживания скролла и запуска анимации
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Настройки наблюдателя: срабатывает, когда 15% карточки появляется на экране
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 
+            };
+
+            // Функция, которая выполняется при пересечении
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    // Если карточка появилась во вьюпорте
+                    if (entry.isIntersecting) {
+                        // Добавляем класс 'active', который запускает CSS-анимацию
+                        entry.target.classList.add('active');
+                    }
+                    // (Опционально) Если убрать else, стихи будут исчезать при скролле вверх
+                    else {
+                        // entry.target.classList.remove('active'); 
+                    }
+                });
+            };
+
+            // Создаем наблюдателя
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            // Находим все карточки со стихами и подключаем к ним наблюдателя
+            const poems = document.querySelectorAll('.poem-card');
+            poems.forEach(poem => {
+                observer.observe(poem);
+            });
+        });
+    </script>
+</body>
+</html>
